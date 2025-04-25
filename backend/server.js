@@ -1,29 +1,31 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2");
-
+require('dotenv').config(); 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
 
 // ✅ MySQL DB Connection
 const db = mysql.createConnection({
-    host: "sql12.freesqldatabase.com",
-    user: "sql12775330",
-    password: "q77cjYI1P6",
-    database: "sql12775330",
-    port: 3306,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
   });
   
-  db.connect((err) => {
-    if (err) {
-      console.error("MySQL connection error:", err);
-      process.exit(1); // stop server if DB connection fails
-    }
-    console.log("MySQL connected to remote database.");
-  });
+  
+
+db.connect((err) => {
+  if (err) {
+    console.error("MySQL connection error:", err);
+    process.exit(1);
+  }
+  console.log("MySQL connected to remote database.");
+});
 
 // 📌 Routes
 
@@ -80,5 +82,5 @@ app.delete("/api/users/:id", (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
